@@ -1,13 +1,15 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4fff6;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e6fff0, #f0fff4);
 }
 
 .title {
   text-align: center;
   color: #0b7a33;
-  margin: 20px;
+  margin: 20px 0;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px #b8e5c7;
 }
 
 .container {
@@ -17,11 +19,13 @@ body {
   padding: 20px;
 }
 
+/* Progress circle */
 .progress-box {
   background: #e6f7ec;
   border-radius: 14px;
   padding: 20px;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .progress-circle {
@@ -36,45 +40,82 @@ body {
   font-size: 24px;
   font-weight: bold;
   color: #0b7a33;
+  background: radial-gradient(circle, #d4f4dd, #e6fff0);
+  transition: all 0.3s ease;
 }
 
+/* Subjects container */
+.subjects {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subject card */
 .subject-card {
-  background: white;
-  border-radius: 14px;
+  background: #f0fff4;
+  border-radius: 12px;
   padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.subject-title {
-  font-size: 20px;
-  color: #0b7a33;
-  margin-bottom: 10px;
+.subject-card:hover {
+  background: #d4f4dd;
+}
+
+/* Accordion dropdowns */
+.chapter-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  margin-left: 15px;
+}
+
+.sub-subject {
+  background: #e6fff0;
+  margin: 5px 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: background 0.3s;
+}
+
+.sub-subject:hover {
+  background: #c8f0c6;
 }
 
 .chapter {
-  padding: 10px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin: 3px 0;
   background: #f0f0f0;
-  margin-bottom: 8px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
 }
 
 .chapter.not-started { background: #eeeeee; }
 .chapter.in-progress { background: #fff3cd; }
 .chapter.completed { background: #d4edda; }
 
-.status-buttons {
-  margin-top: 8px;
+/* Status dropdown buttons */
+.status-dropdown {
   display: none;
+  margin-left: 10px;
 }
 
-.status-buttons button {
-  margin-right: 5px;
+.status-dropdown button {
+  margin-right: 4px;
   border: none;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 .completed-btn { background: #28a745; color: white; }
