@@ -1,4 +1,4 @@
-// Hierarchy for Science only (PCM)
+// Science PCM hierarchy
 const syllabus = {
   Science: {
     Physics: [
@@ -43,10 +43,13 @@ const syllabus = {
   }
 };
 
-// Store status locally
+// Store chapter statuses
 let statusData = {};
+// Store open/closed states for accordion
+let openSubjects = {};
+let openSubSubjects = {};
 
-// Render the UI
+// Right container
 const container = document.getElementById("subjects");
 
 function render() {
@@ -58,28 +61,33 @@ function render() {
     card.className = "subject-card";
     card.textContent = subject;
 
+    if (!openSubjects[subject]) openSubjects[subject] = false;
+
     // Dropdown container for sub-subjects
     const subContainer = document.createElement("div");
     subContainer.className = "chapter-container";
+    if (openSubjects[subject]) subContainer.style.maxHeight = subContainer.scrollHeight + "px";
 
     card.onclick = () => {
-      subContainer.style.maxHeight = 
-        subContainer.style.maxHeight ? null : subContainer.scrollHeight + "px";
+      openSubjects[subject] = !openSubjects[subject];
+      render();
     };
 
-    // Iterate sub-subjects
     for (let sub in syllabus[subject]) {
       const subDiv = document.createElement("div");
       subDiv.className = "sub-subject";
       subDiv.textContent = sub;
 
+      if (!openSubSubjects[sub]) openSubSubjects[sub] = false;
+
       const chapterContainer = document.createElement("div");
       chapterContainer.className = "chapter-container";
+      if (openSubSubjects[sub]) chapterContainer.style.maxHeight = chapterContainer.scrollHeight + "px";
 
       subDiv.onclick = (e) => {
         e.stopPropagation();
-        chapterContainer.style.maxHeight =
-          chapterContainer.style.maxHeight ? null : chapterContainer.scrollHeight + "px";
+        openSubSubjects[sub] = !openSubSubjects[sub];
+        render();
       };
 
       syllabus[subject][sub].forEach(ch => {
@@ -108,9 +116,9 @@ function render() {
           dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         };
 
-        dropdown.children[0].onclick = () => { setStatus(key, "completed"); };
-        dropdown.children[1].onclick = () => { setStatus(key, "in-progress"); };
-        dropdown.children[2].onclick = () => { setStatus(key, "not-started"); };
+        dropdown.children[0].onclick = (e) => { e.stopPropagation(); setStatus(key, "completed"); };
+        dropdown.children[1].onclick = (e) => { e.stopPropagation(); setStatus(key, "in-progress"); };
+        dropdown.children[2].onclick = (e) => { e.stopPropagation(); setStatus(key, "not-started"); };
 
         chapter.appendChild(dropdown);
         chapterContainer.appendChild(chapter);
@@ -127,7 +135,6 @@ function render() {
   document.getElementById("progressText").textContent = Math.round((done / total) * 100) + "%";
 }
 
-// Update status and re-render
 function setStatus(key, status) {
   statusData[key] = status;
   render();
