@@ -4,39 +4,290 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICSE Syllabus Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-green: #27ae60;
+            --light-green: #e8f5e9;
+            --dark-green: #1b5e20;
+            --bg-color: #f0f4f0;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: #333;
+        }
+
+        /* --- Sidebar Layout --- */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--dark-green), var(--primary-green));
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--white) 0%, rgba(255,255,255,0.2) 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .progress-circle::after {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            background: var(--dark-green);
+            border-radius: 50%;
+        }
+
+        .progress-circle span {
+            position: relative;
+            z-index: 10;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid transparent;
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(39, 174, 96, 0.2);
+            border-color: var(--primary-green);
+        }
+
+        /* --- Chapter List Area --- */
+        #chapter-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-title {
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+        }
+
+        .chapter-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .chapter-item:hover {
+            background-color: var(--light-green);
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .status-completed { color: #27ae60; font-weight: bold; }
+        .status-progress { color: #f39c12; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <aside class="sidebar">
-            <h2>Overall Progress</h2>
-            <div class="progress-circle">
+
+    <aside class="sidebar">
+        <h2>ICSE 2026</h2>
+        <div class="progress-container">
+            <div class="progress-circle" id="circle">
                 <span id="overall-percent">0%</span>
             </div>
-        </aside>
+            <p>Overall Progress</p>
+        </div>
+    </aside>
 
-        <main class="dashboard">
-            <div class="row row-upper">
-                <div class="subject-card grayed">English</div>
-                <div class="subject-card grayed">Hindi</div>
-                <div class="subject-card grayed">Comp. Science</div>
-            </div>
+    <main class="main-content">
+        <div class="row">
+            <div class="card" onclick="loadChapters('English')">English</div>
+            <div class="card" onclick="loadChapters('Hindi')">Hindi</div>
+            <div class="card" onclick="loadChapters('Computer Science')">Computer Science</div>
+        </div>
 
-            <div class="row row-lower">
-                <div class="subject-card active" onclick="showChapters('physics')">Physics</div>
-                <div class="subject-card active" onclick="showChapters('chemistry')">Chemistry</div>
-                <div class="subject-card active" onclick="showChapters('biology')">Biology</div>
-                <div class="subject-card grayed">Social Studies</div>
-                <div class="subject-card grayed">Math</div>
-            </div>
+        <div class="row">
+            <div class="card" onclick="loadChapters('Science')">Science (PCM)</div>
+            <div class="card" onclick="loadChapters('Social Studies')">Social Studies</div>
+            <div class="card" onclick="loadChapters('Math')">Mathematics</div>
+        </div>
 
-            <div id="chapter-section" class="chapter-list">
-                <h3 id="selected-subject-name">Select a Science Subject</h3>
-                <ul id="chapters-ul"></ul>
-            </div>
-        </main>
-    </div>
+        <div id="sub-subject-nav" class="row" style="display:none; margin-top:10px;"></div>
 
-    <script type="module" src="app.js"></script>
+        <section id="chapter-section">
+            <h3 id="current-title" class="subject-title">Select a Subject</h3>
+            <div id="chapter-list"></div>
+        </section>
+    </main>
+
+    <script>
+        // --- SYLLABUS DATA ---
+        const syllabus = {
+            "Science": {
+                "Physics": ["Force", "Work, Power and Energy", "Light", "Sound", "Electricity and Magnetism", "Calorimetry"],
+                "Chemistry": ["Periodic Properties", "Chemical Bonding", "Acids, Bases and Salts", "Analytical Chemistry", "Mole Concept", "Electrolysis", "Metallurgy", "Hydrogen Chloride", "Ammonia", "Nitric Acid", "Sulphuric Acid", "Organic Chemistry"],
+                "Biology": ["Cell Cycle", "Structure of chromosome", "Genetics", "Absorption by roots", "Transpiration", "Photosynthesis", "Chemical coordination", "Circulatory System", "Excretory System", "Nervous system", "Endocrine System", "The Reproductive System", "Population", "Pollution", "Human Evolution"]
+            },
+            "English": {
+                "Eng 1": ["Language: Composition", "Letter Writing", "Notice & Email", "Unseen Passages", "Grammar: Tenses", "Grammar: Prepositions", "Grammar: Transformation"],
+                "Eng 2": ["Drama: Merchant of Venice", "Poetry: Treasure Chest", "Prose: Treasure Chest"]
+            },
+            "Social Studies": {
+                "History & Civics": ["The Union Parliament", "The President & VP", "Prime Minister & Council", "The Supreme Court", "The High Courts", "Revolt of 1857", "Mass Phase of National Movement", "The World Wars"],
+                "Geography": ["Interpretation of Topo Sheets", "Map Work", "Climate", "Soil Resources", "Natural Vegetation", "Water Resources", "Mineral & Energy Resources", "Agriculture", "Manufacturing Industries", "Waste Management"]
+            },
+            "Mathematics": ["Commercial Math", "Algebra (Quadratic, Ratio, Matrices)", "Geometry (Circles, Similarity)", "Trigonometry", "Mensuration", "Statistics & Probability"],
+            "Hindi": ["Sahitya Sagar (Short Stories)", "Sahitya Sagar (Poems)", "Ekanki Sanchay", "Vyakaran (Grammar)"],
+            "Computer Science": ["Object Oriented Programming", "Constructors", "Library Classes", "Encapsulation", "Arrays", "String Handling"]
+        };
+
+        const progressData = {}; // This will hold your local progress
+
+        function loadChapters(subject) {
+            const chapterSection = document.getElementById('chapter-section');
+            const subNav = document.getElementById('sub-subject-nav');
+            const chapterList = document.getElementById('chapter-list');
+            
+            chapterSection.style.display = 'block';
+            subNav.innerHTML = '';
+            chapterList.innerHTML = '';
+
+            const data = syllabus[subject];
+
+            if (typeof data === 'object' && !Array.isArray(data)) {
+                // If subject has sub-subjects (like Physics, Chem, Bio)
+                subNav.style.display = 'grid';
+                for (let sub in data) {
+                    let btn = document.createElement('div');
+                    btn.className = 'card';
+                    btn.style.padding = '10px';
+                    btn.innerText = sub;
+                    btn.onclick = () => renderChapterItems(sub, data[sub]);
+                    subNav.appendChild(btn);
+                }
+                document.getElementById('current-title').innerText = "Select a branch of " + subject;
+            } else {
+                subNav.style.display = 'none';
+                renderChapterItems(subject, data);
+            }
+        }
+
+        function renderChapterItems(title, chapters) {
+            const list = document.getElementById('chapter-list');
+            document.getElementById('current-title').innerText = title;
+            list.innerHTML = '';
+
+            chapters.forEach(chap => {
+                const itemId = `${title}-${chap}`;
+                const savedStatus = progressData[itemId] || 'not-started';
+
+                const div = document.createElement('div');
+                div.className = 'chapter-item';
+                div.innerHTML = `
+                    <span>${chap}</span>
+                    <select onchange="updateStatus('${itemId}', this.value)">
+                        <option value="not-started" ${savedStatus === 'not-started' ? 'selected' : ''}>Not Started</option>
+                        <option value="in-progress" ${savedStatus === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="completed" ${savedStatus === 'completed' ? 'selected' : ''}>Completed</option>
+                    </select>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function updateStatus(id, value) {
+            progressData[id] = value;
+            calculateOverall();
+        }
+
+        function calculateOverall() {
+            let totalChapters = 0;
+            let completed = 0;
+
+            // Simple logic: count all chapters in the syllabus object
+            for (let sub in syllabus) {
+                if (Array.isArray(syllabus[sub])) {
+                    totalChapters += syllabus[sub].length;
+                } else {
+                    for (let branch in syllabus[sub]) {
+                        totalChapters += syllabus[sub][branch].length;
+                    }
+                }
+            }
+
+            for (let key in progressData) {
+                if (progressData[key] === 'completed') completed++;
+            }
+
+            const percent = totalChapters > 0 ? Math.round((completed / totalChapters) * 100) : 0;
+            document.getElementById('overall-percent').innerText = percent + "%";
+            document.getElementById('circle').style.background = `conic-gradient(var(--white) ${percent}%, rgba(255,255,255,0.2) ${percent}%)`;
+        }
+    </script>
 </body>
 </html>
