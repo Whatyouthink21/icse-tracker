@@ -17,9 +17,10 @@ body {
   grid-template-columns: 1fr 3fr;
   gap: 20px;
   padding: 20px;
+  height: 80vh;
 }
 
-/* Progress circle */
+/* LEFT */
 .progress-box {
   background: #e6f7ec;
   border-radius: 14px;
@@ -44,25 +45,29 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Subjects container */
-.subjects {
-  display: flex;
-  flex-direction: column;
+/* RIGHT: scrollable subjects container */
+.subjects-container {
+  background: #f9fff9;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
-/* Subject card */
+/* Subject cards */
 .subject-card {
-  background: #f0fff4;
+  background: #e6fff0;
   border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .subject-card:hover {
-  background: #d4f4dd;
+  background: #c8f0c6;
 }
 
 /* Accordion dropdowns */
@@ -70,12 +75,12 @@ body {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s ease;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .sub-subject {
-  background: #e6fff0;
-  margin: 5px 0;
+  background: #d4f4dd;
+  margin: 4px 0;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -84,9 +89,10 @@ body {
 }
 
 .sub-subject:hover {
-  background: #c8f0c6;
+  background: #b8e5c7;
 }
 
+/* Chapter list */
 .chapter {
   padding: 6px 12px;
   border-radius: 6px;
