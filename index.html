@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ICSE Science Tracker</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICSE Syllabus Tracker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Overall Progress</h2>
+            <div class="progress-circle">
+                <span id="overall-percent">0%</span>
+            </div>
+        </aside>
 
-<h1 class="title">ICSE Science Syllabus Tracker</h1>
+        <main class="dashboard">
+            <div class="row row-upper">
+                <div class="subject-card grayed">English</div>
+                <div class="subject-card grayed">Hindi</div>
+                <div class="subject-card grayed">Comp. Science</div>
+            </div>
 
-<div class="container">
+            <div class="row row-lower">
+                <div class="subject-card active" onclick="showChapters('physics')">Physics</div>
+                <div class="subject-card active" onclick="showChapters('chemistry')">Chemistry</div>
+                <div class="subject-card active" onclick="showChapters('biology')">Biology</div>
+                <div class="subject-card grayed">Social Studies</div>
+                <div class="subject-card grayed">Math</div>
+            </div>
 
-  <!-- LEFT: Overall Progress -->
-  <div class="progress-box">
-    <h2>Overall Progress</h2>
-    <div class="progress-circle">
-      <span id="progressText">0%</span>
+            <div id="chapter-section" class="chapter-list">
+                <h3 id="selected-subject-name">Select a Science Subject</h3>
+                <ul id="chapters-ul"></ul>
+            </div>
+        </main>
     </div>
-  </div>
 
-  <!-- RIGHT: Subjects -->
-  <div class="subjects-container">
-    <div class="subjects" id="subjects"></div>
-  </div>
-
-</div>
-
-<script src="script.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
